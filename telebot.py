@@ -29,7 +29,6 @@ async def runBot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-    print(choice)
     if password != 'kcxuao':
         print('运行失败--密码错误')
         return await context.bot.send_message(
