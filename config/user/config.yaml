@@ -1,5 +1,6 @@
 telegram:
-  token: ""     # 机器人TOKEN
+  token: ""        # 机器人TOKEN
+  botPassword: ""  # 命令密码  
 
 vpn:
   chromePath: ./Chrome  # 谷歌浏览器可执行文件路径
