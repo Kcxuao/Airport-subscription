@@ -1,7 +1,7 @@
 import logging
 from telegram import Update, constants
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
-import vpn
+import vpn, os
 from utils import getWords, getConfig, getBalance
 
 logging.basicConfig(
@@ -23,6 +23,7 @@ async def runBot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         choice = int(arg[2])
         balance = getBalance()
     except:
+        os.popen('pkill Google')
         return await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="参数错误"
@@ -85,7 +86,7 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if __name__ == '__main__':
     token = getConfig('telegram')['token']
     botPassword = getConfig('telegram')['botPassword']
-    
+
     if token == None or botPassword == None:
         print("配置读取错误")
     else:
