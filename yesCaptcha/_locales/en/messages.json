@@ -1,0 +1,89 @@
+{
+	"name": {
+		"message": "YesCaptcha assistant"
+	},
+	"pluginDesc": {
+		"message": "reCaptcha/hCaptcha auto solver"
+	},
+	"popup_header_title": {
+		"message": "YesCaptcha assistant"
+	},
+	"popup_header_balance_error": {
+		"message": "error"
+	},
+	"popup_balance": {
+		"message": "Balance"
+	},
+	"popup_panel_title": {
+		"message": "Setting Panel"
+	},
+	"popup_panel_key": {
+		"message": "key"
+	},
+	"popup_panel_address": {
+		"message": "node"
+	},
+	"popup_panel_click_speed": {
+		"message": "click speed"
+	},
+	"popup_panel_save": {
+		"message": "save"
+	},
+	"popup_switch_title": {
+		"message": "Switch"
+	},
+	"popup_switch_label_1": {
+		"message": "reCaptcha"
+	},
+	"popup_switch_label_2": {
+		"message": "hCaptcha"
+	},
+	"popup_switch_label_3": {
+		"message": "coinlist words"
+	},
+	"popup_switch_label_4": {
+		"message": "coinlist pink button"
+	},
+	"popup_switch_label_5": {
+		"message": "Text verification code"
+	},
+	"popup_alert_network": {
+		"message": "network error"
+	},
+	"content_message_0": {
+		"message": "Please fill in ClientKey first"
+	},
+	"content_message_1": {
+		"message": "Insufficient balance"
+	},
+	"content_message_2": {
+		"message": "Automatic recognition has been activated"
+	},
+	"content_message_3": {
+		"message": "Automatic recognition is being recognized"
+	},
+	"content_message_4": {
+		"message": "Automatic recognition completed"
+	},
+	"content_message_5": {
+		"message": "Automatic identification submit image interface identification"
+	},
+	"content_message_6": {
+		"message": "Automatic recognition automatic click"
+	},
+	"content_message_7": {
+		"message": "Automatically recognize click submit"
+	},
+	"context_menu_1": {
+		"message": "Mark as captcha source"
+	},
+	"context_menu_2": {
+		"message": "Put captcha answer here"
+	},
+	"popup_add_fund": {
+		"message": "recharge"
+	},
+	"popup_register": {
+		"message": "register"
+	}
+}

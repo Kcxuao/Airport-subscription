@@ -1,0 +1,54 @@
+{
+  "name": "__MSG_name__",
+  "version": "1.0.8",
+  "manifest_version": 3,
+  "description": "__MSG_pluginDesc__",
+  "default_locale": "en",
+  "icons": {
+    "128": "image/log.png"
+  },
+  "action": {
+    "default_title": "__MSG_name__",
+    "default_icon": "image/log.png",
+    "default_popup": "popup/index.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "js": [
+        "content/captcha_manager.js",
+        "content/index.js"
+      ],
+      "css": [
+        "content/index.css"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "storage",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content/eventDispatcher.js"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
+    }
+  ]
+}

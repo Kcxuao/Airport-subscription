@@ -1,0 +1,89 @@
+{
+	"name": {
+		"message": "YesCaptcha 人机助手"
+	},
+	"pluginDesc": {
+		"message": "reCaptcha/hCaptcha 自动验证"
+	},
+	"popup_header_title": {
+		"message": "YesCaptcha 人机助手"
+	},
+	"popup_header_balance_error": {
+		"message": "错误"
+	},
+	"popup_balance": {
+		"message": "余额"
+	},
+	"popup_panel_title": {
+		"message": "设置面板"
+	},
+	"popup_panel_key": {
+		"message": "密钥"
+	},
+	"popup_panel_address": {
+		"message": "节点"
+	},
+	"popup_panel_click_speed": {
+		"message": "点击速度"
+	},
+	"popup_panel_save": {
+		"message": "保存"
+	},
+	"popup_switch_title": {
+		"message": "开关"
+	},
+	"popup_switch_label_1": {
+		"message": "reCaptcha谷歌人机自动识别"
+	},
+	"popup_switch_label_2": {
+		"message": "hCaptchaHC人机自动识别"
+	},
+	"popup_switch_label_3": {
+		"message": "Coinlist英文数字人机自动识别"
+	},
+	"popup_switch_label_4": {
+		"message": "Coinlist排队时粉色按钮自动点击"
+	},
+	"popup_switch_label_5": {
+		"message": "文字验证码自动识别"
+	},
+	"popup_alert_network": {
+		"message": "网络错误，请检查网络"
+	},
+	"content_message_0": {
+		"message": "请先填写密钥ClientKey"
+	},
+	"content_message_1": {
+		"message": "余额不足"
+	},
+	"content_message_2": {
+		"message": "自动识别已经启动"
+	},
+	"content_message_3": {
+		"message": "自动识别正在识别中"
+	},
+	"content_message_4": {
+		"message": "自动识别已完成"
+	},
+	"content_message_5": {
+		"message": "自动识别提交图像接口识别中"
+	},
+	"content_message_6": {
+		"message": "自动识别自动点击中"
+	},
+	"content_message_7": {
+		"message": "自动识别点击提交"
+	},
+	"context_menu_1": {
+		"message": "标记为验证码"
+	},
+	"context_menu_2": {
+		"message": "输入验证码"
+	},
+	"popup_add_fund": {
+		"message": "充值"
+	},
+	"popup_register": {
+		"message": "注册账户"
+	}
+}
