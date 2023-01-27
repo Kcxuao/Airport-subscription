@@ -5,7 +5,7 @@ import time
 import random
 import json
 import os
-from utils import getConfig, createEmail, createStr
+from utils import getConfig, createEmail, createStr, getHeaders
 
 
 def register(url, email, password,driver):
@@ -90,27 +90,29 @@ def login(url, email, password):
         'email': email,
         'password': password
     }
+    
+    headers = getHeaders(url.replace('api/v1/passport/auth', '#'))
 
     try:
-        res = requests.post(url, data=data).text
-        res = json.loads(res)
+        res = session.post(url, data=data, headers=headers).json()
         return res['data']['token']
     except:
         print('token获取错误')
 
 
-def save(email, password, url):
-    with open(savePath + 'user.txt', 'w') as f:
-        f.write(f"{email}\t\t{password}\n{url}\n")
-        print('保存成功: ' + savePath + 'user.txt')
+# def save(email, password, url):
+#     with open(savePath + 'user.txt', 'w') as f:
+#         f.write(f"{email}\t\t{password}\n{url}\n")
+#         print('保存成功: ' + savePath + 'user.txt')
 
 
-def createUrl(webUrl, token, flag):
+def createUrl(webUrl, token):
     # TODO(): 后续可能修改 
-    if flag == 0:
-        webUrl = 'http://rss.msclm.net'
 
-    url = f"https://sub.xeton.dev/sub?target=surfboard&url={webUrl}api/v1/client/subscribe?token={token}&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FACL4SSR%2FACL4SSR%2Fmaster%2FClash%2Fconfig%2FACL4SSR_Online.ini"
+    res = session.get(webUrl).json()
+    subscribe_url = res['data']['subscribe_url']
+
+    url = f"https://sub.xeton.dev/sub?target=surfboard&url={subscribe_url}&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FACL4SSR%2FACL4SSR%2Fmaster%2FClash%2Fconfig%2FACL4SSR_Online.ini"
     return url
 
 
@@ -142,18 +144,18 @@ def run(i):
 
         if check_element_exists(driver):
             token = login(urlList[i]['loginUrl'], email, password)
-            webUrl = urlList[i]['registerUrl'].split('#')[0]
+            webUrl = urlList[i]['loginUrl'].replace('passport/auth/login', 'user/getSubscribe')
 
             os.popen('pkill Google')
-            save(email, password)
-            
+            # save(email, password)
+
             return createUrl(webUrl, token)
         else:
             os.popen('pkill Google')
             return '获取失败'
     except IndexError:
         return "该选项不存在"
-
+    
 
 def getDriver():
     # print(chromePath)
