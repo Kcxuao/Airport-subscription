@@ -21,6 +21,12 @@ def getConfig(name):
         return res[name]
     except:
         return None
+    
+    
+def getHeaders(url):
+    headers = Headers(headers = True).generate()
+    headers['Referer'] = url
+    return headers
 
 
 def createStr(n):
