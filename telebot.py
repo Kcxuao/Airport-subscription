@@ -29,7 +29,7 @@ async def runBot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-    if password != 'kcxuao':
+    if password != botPassword:
         print('运行失败--密码错误')
         return await context.bot.send_message(
             chat_id=update.effective_chat.id,
@@ -84,8 +84,10 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 if __name__ == '__main__':
     token = getConfig('telegram')['token']
-    if token == None:
-        print("token错误")
+    botPassword = getConfig('telegram')['botPassword']
+    
+    if token == None or botPassword == None:
+        print("配置读取错误")
     else:
         application = ApplicationBuilder().token(token).build()
 
