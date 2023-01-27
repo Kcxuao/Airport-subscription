@@ -5,7 +5,8 @@ vpn:
   chromePath: ./Chrome  # 谷歌浏览器可执行文件路径
   ip: 127.0.0.1 # 调试IP
   port: 9527    # 端口
-  retry: 20     # 最大
+  retry: 20     # 最大重试次数
+  savePath: ./  # 账号信息保存路径
   url_list:     # 机场网址
     [
       {
