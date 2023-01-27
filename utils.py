@@ -1,5 +1,6 @@
 import requests
 import yaml, os, random
+from fake_headers import Headers
 
 
 def getConfig(name):
