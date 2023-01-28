@@ -3,12 +3,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 import random
-import json
 import os
 from utils import getConfig, createEmail, createStr, getHeaders
 
 
-def register(url, email, password,driver):
+def register(url, email, password, driver):
     """注册网站
 
     Args:
@@ -19,18 +18,18 @@ def register(url, email, password,driver):
     """
     driver.get(url)
 
-    emailInput = driver.find_element_by_xpath(
-        '//*[@id="main-container"]/div[2]/div/div[2]/div/div[1]/div/div/div/div[1]/input')
-    passwordInput = driver.find_element_by_xpath(
-        '//*[@id="main-container"]/div[2]/div/div[2]/div/div[1]/div/div/div/div[2]/input')
-    rePasswordInput = driver.find_element_by_xpath(
-        '//*[@id="main-container"]/div[2]/div/div[2]/div/div[1]/div/div/div/div[3]/input')
-    btn = driver.find_element_by_xpath(
-        '//*[@id="main-container"]/div[2]/div/div[2]/div/div[1]/div/div/div/div[5]/button')
+    inputList = driver.find_elements_by_tag_name('input')
+    btn = driver.find_elements_by_tag_name('button')[0]
 
+    emailInput = inputList[0]
+    passwordInput = inputList[1]
+    rePasswordInput = inputList[2]
+    
     emailInput.send_keys(email)
     passwordInput.send_keys(password)
     rePasswordInput.send_keys(password)
+
+   
     try:
         btn.click()
 
@@ -42,7 +41,7 @@ def register(url, email, password,driver):
         pass
 
 
-def check_element_exists(driver):
+def check_element_exists(driver, email='', password=''):
     """校验当前注册状态
 
     Args:
@@ -57,6 +56,18 @@ def check_element_exists(driver):
     print('************')
 
     for i in range(retry):
+        if 'login' in driver.current_url:
+            print('ok')
+            print('login' in driver.current_url)
+            print(email, password)
+
+            inputList = driver.find_elements_by_tag_name('input')
+            btn = driver.find_elements_by_tag_name('button')[0]
+
+            inputList[0].send_keys(email)
+            inputList[1].send_keys(password)
+            btn.click()
+
         try:
             # 获取到说明登录成功，反之报错
             driver.find_elements_by_xpath(
@@ -81,7 +92,7 @@ def login(url, email, password):
         password: 登录密码
     
     Returns:
-        TOKEN
+        TOKEN 
         example:
             dfc5141d3dhbjwaqdheui16ad395c9782352
     """
@@ -90,14 +101,12 @@ def login(url, email, password):
         'email': email,
         'password': password
     }
-    
-    headers = getHeaders(url.replace('api/v1/passport/auth', '#'))
 
+    headers = getHeaders(url.replace('api/v1/passport/auth', '#'))
     try:
-        res = session.post(url, data=data, headers=headers).json()
-        return res['data']['token']
+        res = session.post(url, data=data, headers=headers)
     except:
-        print('token获取错误')
+        print('登录失败')
 
 
 # def save(email, password, url):
@@ -106,9 +115,10 @@ def login(url, email, password):
 #         print('保存成功: ' + savePath + 'user.txt')
 
 
-def createUrl(webUrl, token):
+def createUrl(webUrl):
     # TODO(): 后续可能修改 
 
+    print(webUrl)
     res = session.get(webUrl).json()
     subscribe_url = res['data']['subscribe_url']
 
@@ -142,20 +152,20 @@ def run(i):
     try:
         register(urlList[i]['registerUrl'], email, password, driver)
 
-        if check_element_exists(driver):
-            token = login(urlList[i]['loginUrl'], email, password)
+        if check_element_exists(driver, email, password):
+            login(urlList[i]['loginUrl'], email, password)
             webUrl = urlList[i]['loginUrl'].replace('passport/auth/login', 'user/getSubscribe')
 
             os.popen('pkill Google')
             # save(email, password)
 
-            return createUrl(webUrl, token)
+            return createUrl(webUrl)
         else:
             os.popen('pkill Google')
             return '获取失败'
     except IndexError:
         return "该选项不存在"
-    
+
 
 def getDriver():
     # print(chromePath)
@@ -172,6 +182,8 @@ def getDriver():
 
 if __name__  in ['__main__','vpn']:
 
+    session = requests.Session()
+
     try:
         vpnConfig = getConfig('vpn')
         chromePath = vpnConfig['chromePath']
@@ -182,6 +194,10 @@ if __name__  in ['__main__','vpn']:
         savePath = vpnConfig['savePath']
     except:
         print('配置获取失败')
+
+    # https://www.wuyuandianpu.com/api/v1/user/getSubscribe
+    # https://www.wuyuandianpu.com/api/v1/user/getSubscribe
+    
 
 
 

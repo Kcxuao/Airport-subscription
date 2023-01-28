@@ -1,17 +1,27 @@
 telegram:
-  token: ""        # 机器人TOKEN
-  botPassword: ""  # 命令密码  
+  token: ""   # 机器人TOKEN
+  botPassword: ""   # 模式一密码
 
 vpn:
-  chromePath: ./Chrome  # 谷歌浏览器可执行文件路径
-  ip: 127.0.0.1 # 调试IP
-  port: 9527    # 端口
-  retry: 20     # 最大重试次数
-  savePath: ./  # 账号信息保存路径
-  url_list:     # 机场网址
+  chromePath: Chrome    # 谷歌浏览器可执行文件路径
+  ip: 127.0.0.1
+  port: 9527
+  retry: 20   # 最大重试次数
+  url_list:
     [
       {
-        'registerUrl': '',
-        'loginUrl': '',
+        'registerUrl': 'https://msclm.xyz/#/register',
+        'loginUrl': 'https://msclm.xyz/api/v1/passport/auth/login',
+      },
+      {
+        'registerUrl': 'https://www.wuyuandianpu.com/#/register',
+        'loginUrl': 'https://www.wuyuandianpu.com/api/v1/passport/auth/login',
       }
+    ]
+
+vpn2:
+  retry: 20
+  url_list:
+    [
+      https://www.wuyuandianpu.com
     ]

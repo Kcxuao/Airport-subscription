@@ -22,12 +22,6 @@ def getConfig(name):
         return res[name]
     except:
         return None
-    
-    
-def getHeaders(url):
-    headers = Headers(headers = True).generate()
-    headers['Referer'] = url
-    return headers
 
 
 def createStr(n):
@@ -98,7 +92,6 @@ def getClientKey():
     return config.split("clientKey: '")[1].split("',")[0]
 
 
-
 def getBalance():
     """获取余额
     
@@ -119,3 +112,15 @@ def getBalance():
         return res['balance']
     else:
         return -1
+
+
+def getHeaders(url):
+    headers = Headers(headers = True).generate()
+    headers['Referer'] = url
+    headers['origin'] = url
+    return headers
+
+if __name__ == '__main__':
+    print(getHeaders('http://123.com'))
+
+
