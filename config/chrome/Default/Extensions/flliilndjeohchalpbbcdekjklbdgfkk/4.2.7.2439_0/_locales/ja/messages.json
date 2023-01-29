@@ -1,0 +1,10 @@
+{
+   "extDescription": {
+      "description": "Extension description.",
+      "message": "サーフィンをプライベートかつ安全にしました"
+   },
+   "extName": {
+      "description": "Extension name.",
+      "message": "Avira Browser Safety"
+   }
+}

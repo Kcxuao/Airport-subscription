@@ -1,5 +1,5 @@
 import pprint
-from utils import getConfig, createEmail, createStr, getHeaders
+from utils import getConfig, createEmail, createStr, save, upload
 import requests
 from urllib import parse
 import json, time
@@ -20,7 +20,6 @@ def register(url):
     except:
         return False
 
-# '06227601@163.com', '4957969861'
 
 def login(url):
     print('开始登录')
@@ -56,25 +55,36 @@ def createUrl(subscribe_url):
 
 
 def run(i):
-    headers = getHeaders(urlList[0])
 
-    registerUrl = urlList[i] + '/api/v1/passport/auth/register'
-    subscribeUrl = urlList[i] + '/api/v1/user/getSubscribe'
-    loginUrl = urlList[i] + '/api/v1/passport/auth/login'
+    urls = urlList[i]
+    registerUrl = urls['url'] + '/api/v1/passport/auth/register'
+    subscribeUrl = urls['url'] + '/api/v1/user/getSubscribe'
+    loginUrl = urls['url'] + '/api/v1/passport/auth/login'
   
     token = register(registerUrl)
     if token == False:
         token = login(loginUrl)
 
     subscribe_url = getUrl(subscribeUrl, token)
-    return createUrl(subscribe_url)
+    vpnUrl = createUrl(subscribe_url)
+
+
+    flag = save(vpnUrl, urls['name'])
+    if not flag:
+        return vpnUrl
+    
+    flag2 = upload(urls['name'])
+    if not flag2:
+        return vpnUrl
+    
+    return '上传成功'
 
 
 if __name__ in ['__main__', 'vpn2']:
 
     try:
         vpnConfig = getConfig('vpn2')
-        urlList = vpnConfig['url_list']
+        urlList = vpnConfig['urlList']
         retry = vpnConfig['retry']
     except:
         print('配置获取失败')

@@ -4,6 +4,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Messa
 import vpn, os, vpn2
 from utils import getWords, getConfig, getBalance
 
+
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -88,6 +89,8 @@ async def runV2Bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         url = vpn2.run(choice)
+
+        print(url)
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=url
@@ -106,10 +109,10 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     获取机场订阅链接并转换为surfboard格式
 
 如何使用？
-    /start           问好
+    /start              问好
     /run[密码][索引]  启动[模式一]
     /run_v2 [索引]   启动[模式二]
-    /help           显示当前帮助文档
+    /help             显示当前帮助文档
     """
 
     await context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode=constants.ParseMode.HTML)

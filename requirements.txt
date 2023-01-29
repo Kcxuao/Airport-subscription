@@ -1,6 +1,7 @@
-fake_headers==1.0.2
+fake_useragent==1.1.1
 python_telegram_bot==20.0
 PyYAML==6.0
 requests==2.26.0
 selenium==3.141.0
 telegram==0.0.1
+webdavclient3==3.14.6

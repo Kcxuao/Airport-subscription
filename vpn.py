@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 import random
 import os
-from utils import getConfig, createEmail, createStr, getHeaders
+from utils import getConfig, createEmail, createStr, getHeaders, save, upload
 
 
 def register(url, email, password, driver):
@@ -96,17 +96,21 @@ def login(url, email, password):
         example:
             dfc5141d3dhbjwaqdheui16ad395c9782352
     """
-
+    print('正在登录...')
     data = {
         'email': email,
         'password': password
     }
 
-    headers = getHeaders(url.replace('api/v1/passport/auth', '#'))
+    headers = getHeaders(url.replace('/api/v1/passport/auth/login', ""))
+    print(headers)
     try:
         res = session.post(url, data=data, headers=headers)
+        print("登录成功")
+        return True
     except:
         print('登录失败')
+        return False
 
 
 # def save(email, password, url):
@@ -115,11 +119,10 @@ def login(url, email, password):
 #         print('保存成功: ' + savePath + 'user.txt')
 
 
-def createUrl(webUrl):
+def createUrl(url):
     # TODO(): 后续可能修改 
 
-    print(webUrl)
-    res = session.get(webUrl).json()
+    res = session.get(url).json()
     subscribe_url = res['data']['subscribe_url']
 
     url = f"https://sub.xeton.dev/sub?target=surfboard&url={subscribe_url}&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FACL4SSR%2FACL4SSR%2Fmaster%2FClash%2Fconfig%2FACL4SSR_Online.ini"
@@ -149,20 +152,37 @@ def run(i):
         print('实例启动失败')
         return
 
+    urls = urlList[i]
+    registerUrl = urls['url'] + '/#/register'
+    subscribeUrl = urls['url'] + '/api/v1/user/getSubscribe'
+    loginUrl = urls['url'] + '/api/v1/passport/auth/login'
+    name = urls['name']
+
     try:
-        register(urlList[i]['registerUrl'], email, password, driver)
+        register(registerUrl, email, password, driver)
 
-        if check_element_exists(driver, email, password):
-            login(urlList[i]['loginUrl'], email, password)
-            webUrl = urlList[i]['loginUrl'].replace('passport/auth/login', 'user/getSubscribe')
-
-            os.popen('pkill Google')
-            # save(email, password)
-
-            return createUrl(webUrl)
-        else:
+        if not check_element_exists(driver, email, password):
+            print('获取失败')
             os.popen('pkill Google')
             return '获取失败'
+        
+        os.popen('pkill Google')
+        flag = login(loginUrl, email, password)
+        if not flag:
+            return '登录失败'
+
+        vpnUrl = createUrl(subscribeUrl)
+        flag = save(vpnUrl, urls['name'])
+
+        if not flag:
+            return vpnUrl
+        
+        flag2 = upload(urls['name'])
+        if not flag2:
+            return vpnUrl
+        
+        return '上传成功'
+            
     except IndexError:
         return "该选项不存在"
 
@@ -189,15 +209,13 @@ if __name__  in ['__main__','vpn']:
         chromePath = vpnConfig['chromePath']
         ip = vpnConfig['ip']
         port = vpnConfig['port']
-        urlList = vpnConfig['url_list']
+        urlList = vpnConfig['urlList']
         retry = vpnConfig['retry']
         savePath = vpnConfig['savePath']
     except:
         print('配置获取失败')
 
-    # https://www.wuyuandianpu.com/api/v1/user/getSubscribe
-    # https://www.wuyuandianpu.com/api/v1/user/getSubscribe
-    
+
 
 
 

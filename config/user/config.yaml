@@ -1,27 +1,37 @@
 telegram:
-  token: ""   # 机器人TOKEN
-  botPassword: ""   # 模式一密码
+  token: ""  # 机器人TOKEN
+  botPassword: "0000" # 模式一密码
 
 vpn:
-  chromePath: Chrome    # 谷歌浏览器可执行文件路径
+  chromePath: ./Chrome  # 谷歌浏览器可执行文件路径
   ip: 127.0.0.1
   port: 9527
-  retry: 20   # 最大重试次数
-  url_list:
+  retry: 20  # 最大重试次数
+  savePath: ./
+  urlList:
     [
       {
-        'registerUrl': 'https://msclm.xyz/#/register',
-        'loginUrl': 'https://msclm.xyz/api/v1/passport/auth/login',
+        name: '冲浪猫',
+        url: 'https://msclm.xyz',
       },
+    ]
+    
+vpn2:
+  retry: 20
+  urlList:
+    [
       {
-        'registerUrl': 'https://www.wuyuandianpu.com/#/register',
-        'loginUrl': 'https://www.wuyuandianpu.com/api/v1/passport/auth/login',
+        name: '五元店',
+        url: 'https://www.wuyuandianpu.com'
       }
     ]
 
-vpn2:
-  retry: 20
-  url_list:
-    [
-      https://www.wuyuandianpu.com
-    ]
+webdav:
+  uploadPath: /Surfboard/profiles/  # webdav路径
+  savePath: ./urls/  # 文件保存路径
+  options:
+    webdav_hostname: ""  # webdav地址
+    webdav_login: ""  # 账号
+    webdav_password: ""  # 密码
+    disable_check: True
+    

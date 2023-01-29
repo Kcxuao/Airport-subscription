@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="112px" height="139px" viewBox="0 0 112 139" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>pic_medal</title>
+    <defs>
+        <filter x="-26.9%" y="-20.1%" width="153.8%" height="140.2%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="3" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Extension" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="abs_03_light" transform="translate(-114.000000, -88.000000)">
+            <g id="pic_medal" filter="url(#filter-1)" transform="translate(130.000000, 104.000000)">
+                <path d="M31.5,62.5 L9.5,62.5 L9.5,98.2746715 L20.5,93.7698985 L31.5,98.2746715 L31.5,62.5 Z" id="Rectangle" stroke="#BDBDBD" stroke-width="5" fill="#FFFFFF" transform="translate(20.500000, 81.000000) rotate(19.000000) translate(-20.500000, -81.000000) "></path>
+                <path d="M70.5,62.5 L48.5,62.5 L48.5,98.2746715 L59.5,93.7698985 L70.5,98.2746715 L70.5,62.5 Z" id="Rectangle-Copy-18" stroke="#BDBDBD" stroke-width="5" fill="#FFFFFF" transform="translate(59.500000, 81.000000) scale(-1, 1) rotate(19.000000) translate(-59.500000, -81.000000) "></path>
+                <circle id="Oval" stroke="#BDBDBD" stroke-width="5" fill="#DDDDDD" cx="40" cy="39" r="36.5"></circle>
+                <circle id="Oval-Copy" stroke="#BDBDBD" stroke-width="5" fill="#FFFFFF" cx="40" cy="39" r="19.5"></circle>
+                <path d="M40,1 C61.5391052,1 79,18.4608948 79,40 C79,50.2980474 75.0086396,59.6638626 68.4885165,66.6348478 L79.101432,97.46072 L64.537,96.6285102 L53.5724305,106.25106 L44.1152758,78.7854616 C42.7628974,78.9272885 41.38994,79 40,79 L40,79 L39.999568,66.832 L39.898568,66.53928 L39.999568,66.504 Z" id="Combined-Shape" fill-opacity="0.25" fill="#000000"></path>
+            </g>
+        </g>
+    </g>
+</svg>

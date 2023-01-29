@@ -1,14 +1,18 @@
 import requests
-import yaml, os, random
-from fake_headers import Headers
+import yaml
+import os
+import random
+from fake_useragent import UserAgent
+from webdav3.client import Client
+from webdav3.exceptions import LocalResourceNotFound
 
 
-def getConfig(name):
+def getConfig(filename):
     """获取配置文件参数
 
     Args:
-        name: 配置项
-    
+        filename: 配置项
+
     Returns:
         配置项
     """
@@ -19,7 +23,7 @@ def getConfig(name):
 
     try:
         res = yaml.load(config, Loader=yaml.FullLoader)  # 用load方法转字典
-        return res[name]
+        return res[filename]
     except:
         return None
 
@@ -29,7 +33,7 @@ def createStr(n):
 
     Args:
         n: 需要生成的字符串位数
-    
+
     Returns:
         n位字符串
         example:
@@ -80,7 +84,7 @@ def getClientKey():
     """获取clientKey
 
         获取 ./yesCaptcha/config.js 中的clientKey属性
-    
+
     Returns:
         clientKey字符串
         example:
@@ -94,7 +98,7 @@ def getClientKey():
 
 def getBalance():
     """获取余额
-    
+
     Returns:
         余额字符串
         example:
@@ -115,12 +119,53 @@ def getBalance():
 
 
 def getHeaders(url):
-    headers = Headers(headers = True).generate()
+    headers = {}
+    headers['user-agent'] = UserAgent().random
     headers['Referer'] = url
     headers['origin'] = url
     return headers
 
-if __name__ == '__main__':
-    print(getHeaders('http://123.com'))
 
+def save(url, filename):
+    try:
+        savePath = getConfig('webdav')['savePath']
+    except:
+        print('配置读取错误')
+        return False
+
+    try:
+        print('开始保存文件...')
+        res = requests.get(url).text
+
+        with open(f'{savePath + filename}.conf', 'w') as f:
+            f.writelines(res)
+
+        print('保存成功')
+    except:
+        print('保存失败')
+        return False
+    return True
+
+
+def upload(filename):
+    print('正在上传文件到webdav...')
+
+    try:
+        config = getConfig('webdav')
+        options = config['options']
+        uploadPath = config['uploadPath']
+        savePath = config['savePath']
+    except:
+        print('配置读取错误')
+        return False
+
+    try:
+        client = Client(options)
+        client.upload(f'{uploadPath + filename}.conf', f'{savePath + filename}.conf')
+        # 打印结果，之后会重定向到log
+        print(f'文件上传成功: {filename}.conf')
+        return True
+    except:
+        print(f'文件上传失败: {filename}.conf')
+        return False
 
