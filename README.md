@@ -133,7 +133,7 @@ pip install -r requirements.txt
 
      ```yaml
      vpn:
-     	chromePath: ./Chrome  # 修改为你的谷歌浏览器可执行文件路径
+        chromePath: ./Chrome  # 修改为你的谷歌浏览器可执行文件路径
      ```
 
   2. yesCaptcha/config.js
