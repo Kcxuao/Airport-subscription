@@ -129,15 +129,23 @@ def getHeaders(url):
 def save(url, filename):
     try:
         savePath = getConfig('webdav')['savePath']
+        mode = getConfig('public')['mode']
+        format = getConfig('public')['format']
     except:
         print('配置读取错误')
+        return False
+
+    print(url)
+    
+    if mode not in ['surfboard']:
+        print('该模式不支持webdav，将以URL模式返回')
         return False
 
     try:
         print('开始保存文件...')
         res = requests.get(url).text
 
-        with open(f'{savePath + filename}.conf', 'w') as f:
+        with open(savePath + filename + format, 'w') as f:
             f.writelines(res)
 
         print('保存成功')
@@ -155,17 +163,17 @@ def upload(filename):
         options = config['options']
         uploadPath = config['uploadPath']
         savePath = config['savePath']
+        format = getConfig('public')['format']
     except:
         print('配置读取错误')
         return False
 
     try:
         client = Client(options)
-        client.upload(f'{uploadPath + filename}.conf', f'{savePath + filename}.conf')
+        client.upload(uploadPath + filename + format, savePath + filename + format)
         # 打印结果，之后会重定向到log
-        print(f'文件上传成功: {filename}.conf')
+        print('文件上传成功: ' + filename + format)
         return True
     except:
-        print(f'文件上传失败: {filename}.conf')
+        print('文件上传失败: ' + filename + format )
         return False
-

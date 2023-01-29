@@ -68,7 +68,6 @@ def run(i):
     subscribe_url = getUrl(subscribeUrl, token)
     vpnUrl = createUrl(subscribe_url)
 
-
     flag = save(vpnUrl, urls['name'])
     if not flag:
         return vpnUrl
