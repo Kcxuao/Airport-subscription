@@ -78,7 +78,7 @@ pip install -r requirements.txt
 
   ```yaml
   vpn:
-  	urlList:    
+     urlList:    
         [
             {
                 name: '冲浪猫',  # 名字 决定下载的文件名称
