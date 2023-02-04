@@ -81,13 +81,9 @@ pip install -r requirements.txt
      urlList:    
         [
             {
-                name: '冲浪猫',  # 名字 决定下载的文件名称
-                url: 'https://msclm.xyz',  # 官网地址，地址后不要带/
-            },
-            {
                 name: '',  # 名字 决定下载的文件名称
                 url: '',  # 官网地址，地址后不要带/
-            },
+            }
             ...
         ]
   ```
@@ -97,6 +93,10 @@ pip install -r requirements.txt
 
 
 ## 5、运行
+
+  ```python
+  python3 main.py 或 ./run.sh
+  ```
 
 1. 打开你的机器人，输入/help查看命令列表
 2. 执行/run 或 /run_v2

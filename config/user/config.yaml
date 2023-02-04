@@ -8,12 +8,11 @@ vpn:
   ip: 127.0.0.1
   port: 9527
   retry: 20  # 最大重试次数
-  savePath: ./
   urlList:
     [
       {
-        name: '冲浪猫',
-        url: 'https://msclm.xyz',
+        name: '',
+        url: '',
       },
     ]
     
@@ -22,14 +21,14 @@ vpn2:
   urlList:
     [
       {
-        name: '五元店',
-        url: 'https://www.wuyuandianpu.com'
+        name: '猪猪侠',
+        url: 'https://zhuzhuxia.cloud'
       }
     ]
 
 webdav:
   uploadPath: /Surfboard/profiles/  # webdav路径
-  savePath: ./urls/  # 文件保存路径
+  savePath: files/  # 文件保存路径
   options:
     webdav_hostname: ""  # webdav地址
     webdav_login: ""  # 账号
@@ -38,5 +37,6 @@ webdav:
 
 
 public:
-  mode: "surfbrand"
+  mode: "surfboard"
   format: ".conf"
+  subconverterPath: subconverter/subconverter
