@@ -107,7 +107,7 @@ pip install -r requirements.txt
 
 - 参数说明：
 
-  - 密钥：在配置文件中设置的botPassword
+  - 白名单：在该列表中的账号将有权执行命令
 
     ```yaml
     telegram:
