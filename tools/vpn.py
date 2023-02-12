@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 import random
 import os
-from utils import getConfig, createEmail, createStr, getHeaders, save, upload, getIp
+from .utils import getConfig, createEmail, createStr, getHeaders, save, upload, getIp
 
 
 def register(url, email, password, driver):

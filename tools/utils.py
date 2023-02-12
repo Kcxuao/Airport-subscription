@@ -3,6 +3,7 @@ import requests, socket
 import yaml
 import os
 import random
+from threading import Thread
 from fake_useragent import UserAgent
 from webdav3.client import Client
 from webdav3.exceptions import LocalResourceNotFound
@@ -114,7 +115,6 @@ def getBalance():
     res = requests.post(
         'https://china.yescaptcha.com/getBalance', data=data).json()
     if res['errorId'] == 0:
-        print(f"当前余额为: 「 {res['balance']} 」")
         return res['balance']
     else:
         return -1
@@ -175,11 +175,21 @@ def getIp():
      
     return localIP    
 
-if __name__ == '__main__':
-    a = getIp()
-    print(a)
 
+class MyThread(Thread):
+    def __init__(self, func, args):
+        super(MyThread, self).__init__()
+        self.func = func
+        self.args = args
 
+    def run(self):
+        self.result = self.func(*self.args)
+
+    def get_result(self):
+        try:
+            return self.result
+        except Exception:
+            return None
 
 
 def upload(filename):
@@ -204,3 +214,32 @@ def upload(filename):
     except:
         print('文件上传失败: ' + filename + format )
         return False
+
+
+def isExist(str):
+
+    list = getConfig('openai')['image_str_list']
+
+    for i in list:
+        if i in str:
+            return True
+
+    return False
+
+
+def getImage():
+    print('获取图片')
+
+    try:
+        mode = getConfig('image')['mode']
+        resp = requests.get(url=f"https://moe.jitsu.top/img/?sort={mode}&type=json")
+        return resp.json()['pics'][0]
+    except:
+        return "没有找到图片呢 (*>﹏<*)"
+
+
+def getVideo():
+    print('获取视频')
+
+    resp = requests.get(url=f"https://tucdn.wpon.cn/api-girl/index.php?wpon=json")
+    return "https:" + resp.json()['mp4']

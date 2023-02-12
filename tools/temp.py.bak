@@ -1,0 +1,31 @@
+import asyncio, aiohttp
+from tools.utils import getConfig
+
+
+
+
+class TGBot:
+
+    def __init__(self) -> None:
+        info = getConfig('telegram')
+        self.token = info['token']
+        self.chat_id = info['chat_id']
+
+
+    async def send(self, method, message):
+
+        if method == 'sendMessage':
+            url = f'https://api.telegram.org/bot{self.token}/{method}?chat_id={self.chat_id}&text={message}'
+        elif method == 'sendPhoto':
+            url = f'https://api.telegram.org/bot{self.token}/{method}?chat_id={self.chat_id}&photo={message}'
+        
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+            async with session.get(url) as resp:
+                return await resp.json()
+
+
+
+if __name__ == '__main__':
+    pass
+    # a = asyncio.run(TGBot().send("sendMessage", "https://pixiv50.com/static/images/wcldpgn/6203904_82693450_p0.jpg"))
+    # print(a)

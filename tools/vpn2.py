@@ -1,5 +1,5 @@
 import pprint
-from utils import getConfig, createEmail, createStr, save, upload, getIp
+from .utils import getConfig, createEmail, createStr, save, upload, getIp
 import requests
 from urllib import parse
 import json, time, os
@@ -113,3 +113,4 @@ if __name__ in ['__main__', 'tools.vpn2']:
         'email': createEmail(),
         'password': createStr(10)
     }
+

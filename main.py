@@ -1,10 +1,11 @@
-import logging, os, sys
+from tools import vpn, vpn2
+from tools.utils import getWords, getConfig, getBalance, isExist, getImage, getVideo
+import os, sys, logging
 from telegram import Update, constants
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
+from tools.gptAi import createImageResp, createOpenaiResp
 
 sys.path.append('./tools/')
-from tools import vpn,vpn2
-from tools.utils import getWords, getConfig, getBalance
 
 
 logging.basicConfig(
@@ -14,18 +15,19 @@ logging.basicConfig(
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('运行start')
+    logging.info("运行start")
     await context.bot.send_message(chat_id=update.effective_chat.id, text=getWords())
 
 
 async def runV1Bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('运行run')
-    
+    logging.info('运行run')
+
+    chat_id = str(update.effective_chat.id)
+
     try:
         arg = (update['message']['text']).split(" ")
-        password = arg[1]
-        choice = int(arg[2])
         balance = getBalance()
+        choice = int(arg[1])
     except:
         os.popen('pkill Google')
         return await context.bot.send_message(
@@ -33,16 +35,15 @@ async def runV1Bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text="参数错误"
         )
 
-
-    if password != botPassword:
-        print('运行失败--密码错误')
+    if chat_id not in whiteList:
+        logging.info('运行失败--无权访问: ' + chat_id)
         return await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="密码错误"
+            text="您没有权限访问"
         )
 
     if balance < 20:
-        print('余额不足')
+        logging.info('余额不足')
         return await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=f"余额不足 当前余额为: 「 {balance} 」"
@@ -60,6 +61,7 @@ async def runV1Bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     url = vpn.run(choice)
+
     if url:
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
@@ -73,7 +75,9 @@ async def runV1Bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def runV2Bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('运行v2')
+    logging.info('运行v2')
+
+    chat_id = str(update.effective_chat.id)
 
     try:
         arg = (update['message']['text']).split(" ")
@@ -83,16 +87,22 @@ async def runV2Bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=update.effective_chat.id,
             text="参数错误"
         )
-    
-    await context.bot.send_message(
+
+    if chat_id not in whiteList:
+        logging.info('运行失败--无权访问: ' + chat_id)
+        return await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="开始运行"
+            text="您没有权限访问"
+        )
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="开始运行"
     )
 
     try:
         url = vpn2.run(choice)
-        
-        print(url)
+
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=url
@@ -102,63 +112,74 @@ async def runV2Bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=update.effective_chat.id,
             text='获取失败'
         )
-    
+
 
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('运行help')
+    logging.info('运行help')
     text = """
 它可以做什么？
     获取机场订阅链接并转换为surfboard格式
 
 如何使用？
-    /start              问好
-    /run[密码][索引]  启动[模式一]
-    /run_v2 [索引]   启动[模式二]
-    /run_trans      启动订阅转换服务
-    /stop_trans     停止订阅转换服务
-    /help             显示当前帮助文档
+    /start            \t\t问好
+    /run i           \t\t启动[模式一]
+    /run_v2 i       \t\t启动[模式二]
+    /image          \t\t返回一张图片
+    /video           \t\t返回一个视频
+    /help            \t\t显示当前帮助文档
     """
 
     await context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode=constants.ParseMode.HTML)
-    
-
-async def run_trans(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('启动订阅转换服务')
-    text= ''
-
-    # 启动订阅转换服务
-    os.system(f'pkill subconverter')
-    flag = os.system(f'nohup {subconverterPath} > ./log/subconverter.log 2>&1 &')
-    if flag == 0:
-        text = '订阅转换服务启动成功'
-    else:
-        text = '订阅转换服务启动失败'
-
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
 
 
-async def stop_trans(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('停止订阅转换服务')
-    text= ''
+async def chatgpt(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    # 启动订阅转换服务
-    flag = os.system(f'pkill subconverter')
-    if flag == 0:
-        text = '订阅转换服务停止成功'
-    else:
-        text = '订阅转换服务停止失败'
+    prompt = update.message.text
 
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+    try:
+        if isExist(prompt):
+            imageUrl = createImageResp(prompt)
+            await context.bot.send_photo(chat_id=update.effective_chat.id, photo=imageUrl)
+
+        else:
+            text = createOpenaiResp(prompt)
+            await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+    except:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="没有找到这个 (*>﹏<*)")
+
+
+async def image(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    try:
+        url = getImage()
+        await context.bot.send_photo(chat_id=update.effective_chat.id, photo=url)
+    except:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="没有找到图片呢 (*>﹏<*)")
+
+
+async def video(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    try:
+        url = getVideo()
+        await context.bot.send_video(
+            chat_id=update.effective_chat.id, 
+            video=url, read_timeout=60, 
+            connect_timeout=60, 
+            write_timeout=60, 
+            pool_timeout=60
+        )
+    except:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="没有找到视频呢 (*>﹏<*)")
 
 
 
 if __name__ == '__main__':
     token = getConfig('telegram')['token']
-    botPassword = getConfig('telegram')['botPassword']
+    whiteList = getConfig('telegram')['whiteList']
     subconverterPath = getConfig('public')['subconverterPath']
 
-    if token == None or botPassword == None:
-        print("配置读取错误")
+    if token == None:
+        logging.info("配置读取错误")
     else:
         application = ApplicationBuilder().token(token).build()
 
@@ -166,14 +187,9 @@ if __name__ == '__main__':
         run_handler = CommandHandler('run', runV1Bot)
         runv2_handler = CommandHandler('run_v2', runV2Bot)
         help_handler = CommandHandler('help', help)
-        run_trans_handler = CommandHandler('run_trans', run_trans)
-        stop_trans_handler = CommandHandler('stop_trans', stop_trans)
-
-        application.add_handler(start_handler)
-        application.add_handler(run_handler)
-        application.add_handler(help_handler)
-        application.add_handler(runv2_handler)
-        application.add_handler(run_trans_handler)
-        application.add_handler(stop_trans_handler)
-
+        video_handler = CommandHandler('video', video)
+        image_handler = CommandHandler('image', image)
+        chatgpt_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), chatgpt)
+        
+        application.add_handlers([start_handler, run_handler, help_handler, runv2_handler, chatgpt_handler, image_handler, video_handler])
         application.run_polling()
