@@ -51,7 +51,7 @@ def getUrl(url, token):
 def createUrl(subscribe_url):
     print('订阅转换成功')
 
-    url = f'http://sub.xeton.dev/sub?target={mode}&new_name=true&url={subscribe_url}&insert=false&url=https%3A%2F%2Fxn--4gq62f52gdss.com%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3Ddfc5141d3113f8e4556ad395c9782352&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FACL4SSR%2FACL4SSR%2Fmaster%2FClash%2Fconfig%2FACL4SSR_Online_AdblockPlus.ini'
+    url = f'https://sub.id9.cc/sub?target={mode}&new_name=true&url={subscribe_url}&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FACL4SSR%2FACL4SSR%2Fmaster%2FClash%2Fconfig%2FACL4SSR_Online.ini'
     return url
 
 
